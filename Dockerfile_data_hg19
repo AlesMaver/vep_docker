@@ -1,6 +1,18 @@
+##############################
+# HOWTO
+# Build the image and tag it with the following command:
+# docker build -f Dockerfile_data_hg19 -t alesmaver/vep_grch37:latest .
+##############################
+
+##############################
+# STAGE 1 - download databases
+##############################
 FROM alpine/git as intermediate
 RUN git clone https://github.com/konradjk/loftee.git /loftee
 
+##############################
+# STAGE 2 - Download loftee DBs
+##############################
 FROM alpine as download_loftee
 RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/human_ancestor.fa.gz -Y off
 RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/human_ancestor.fa.gz.fai -Y off
@@ -11,6 +23,10 @@ RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/GERP_sco
 RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/loftee.sql.gz -Y off
 RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/phylocsf_gerp.sql.gz -Y off
 
+##############################
+# STAGE 4 - Prepare AlphaMissense DB
+# Prepared by Aleksander
+##############################
 FROM alpine as download_AlphaMissense
 
 #Download tabix so we can index the AM dataset
@@ -53,6 +69,10 @@ RUN tabix --version
 RUN wget https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg19.tsv.gz -Y off
 RUN tabix -s 1 -b 2 -e 2 -f -S 1 AlphaMissense_hg19.tsv.gz
 
+##############################
+# STAGE 5 - Create VEP docker, copy relevant datasets to the image
+# VEP should at least release 112 to support AlphaMissense (Aleksander) # FROM ensemblorg/ensembl-vep:release_112.0
+##############################
 
 #Updated to VEP release 112 to support AlphaMissense
 FROM ensemblorg/ensembl-vep:release_112.0
@@ -66,8 +86,8 @@ RUN mkdir -p /opt/vep/.vep/Plugins/AlphaMissense && \
     chmod 777 /opt/vep/.vep/Plugins/AlphaMissense
 
 # Copy AlphaMissense files
-COPY AlphaMissense_hg19.tsv.gz /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz
-COPY AlphaMissense_hg19.tsv.gz.tbi /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz.tbi
+COPY --from=download_AlphaMissense AlphaMissense_hg19.tsv.gz /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz
+COPY --from=download_AlphaMissense AlphaMissense_hg19.tsv.gz.tbi /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz.tbi
 
 # Change permissions for AlphaMissense files
 RUN chmod 777 /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz && \
