@@ -2,6 +2,7 @@
 # HOWTO
 # Build the image and tag it with the following command:
 # docker build -f Dockerfile_data_hg19 -t alesmaver/vep_grch37:latest .
+# docker push alesmaver/vep_grch37:latest
 ##############################
 
 ##############################

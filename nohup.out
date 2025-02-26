@@ -1,0 +1,121 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile_data_hg19
+#1 transferring dockerfile: 4.86kB done
+#1 WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)
+#1 WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 16)
+#1 WARN: StageNameCasing: Stage name 'download_AlphaMissense' should be lowercase (line 30)
+#1 WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 30)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/ensemblorg/ensembl-vep:release_112.0
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/alpine:latest
+#3 ...
+
+#4 [auth] alpine/git:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#5 [auth] library/alpine:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [internal] load metadata for docker.io/alpine/git:latest
+#6 DONE 1.2s
+
+#3 [internal] load metadata for docker.io/library/alpine:latest
+#3 DONE 1.3s
+
+#7 [internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [download_loftee 1/8] FROM docker.io/library/alpine:latest@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+#8 DONE 0.0s
+
+#9 [intermediate 1/2] FROM docker.io/alpine/git:latest@sha256:aae65eb478488c2534fd5c1b383afa925d17e38f28cfd189bdec21d5bf78b88a
+#9 DONE 0.0s
+
+#10 [stage-3  1/18] FROM docker.io/ensemblorg/ensembl-vep:release_112.0
+#10 DONE 0.0s
+
+#11 [download_alphamissense 7/9] RUN tabix --version
+#11 CACHED
+
+#12 [download_alphamissense 6/9] RUN rm -rf htslib-1.20 htslib.tar.bz2     && apk del     gcc     g++     make
+#12 CACHED
+
+#13 [download_alphamissense 5/9] RUN cd htslib-1.20     && make install
+#13 CACHED
+
+#14 [download_alphamissense 2/9] RUN apk add --no-cache     gcc     g++     make     zlib-dev     curl     curl-dev     tar     bzip2     bzip2-dev     xz     xz-dev
+#14 CACHED
+
+#15 [download_alphamissense 4/9] RUN ls -la htslib-1.20
+#15 CACHED
+
+#16 [download_alphamissense 3/9] RUN curl -L https://github.com/samtools/htslib/releases/download/1.20/htslib-1.20.tar.bz2 -o htslib.tar.bz2     && tar -xjf htslib.tar.bz2
+#16 CACHED
+
+#17 [download_alphamissense 8/9] RUN wget https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg19.tsv.gz -Y off
+#17 CACHED
+
+#18 [download_alphamissense 9/9] RUN tabix -s 1 -b 2 -e 2 -f -S 1 AlphaMissense_hg19.tsv.gz
+#18 CACHED
+
+#19 [stage-3  4/18] COPY --from=download_AlphaMissense AlphaMissense_hg19.tsv.gz /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz
+#19 CACHED
+
+#20 [stage-3  5/18] COPY --from=download_AlphaMissense AlphaMissense_hg19.tsv.gz.tbi /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz.tbi
+#20 CACHED
+
+#21 [stage-3  2/18] RUN apt-get update && apt-get install -y samtools
+#21 CACHED
+
+#22 [stage-3  8/18] RUN ls -l /opt/vep/.vep/Plugins
+#22 CACHED
+
+#23 [stage-3  6/18] RUN chmod 777 /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz &&     chmod 777 /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz.tbi
+#23 CACHED
+
+#24 [stage-3  7/18] RUN ls -l /opt/vep/.vep/Plugins/AlphaMissense/AlphaMissense_hg19.tsv.gz
+#24 CACHED
+
+#25 [stage-3  3/18] RUN mkdir -p /opt/vep/.vep/Plugins/AlphaMissense &&     chmod 777 /opt/vep/.vep/Plugins/AlphaMissense
+#25 CACHED
+
+#26 [download_loftee 4/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/human_ancestor.fa.gz.gzi -Y off
+#26 CACHED
+
+#27 [download_loftee 2/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/human_ancestor.fa.gz -Y off
+#27 CACHED
+
+#28 [download_loftee 5/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/GERP_scores.final.sorted.txt.gz -Y off
+#28 CACHED
+
+#29 [download_loftee 3/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/human_ancestor.fa.gz.fai -Y off
+#29 CACHED
+
+#30 [download_loftee 6/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/GERP_scores.final.sorted.txt.gz.tbi -Y off
+#30 CACHED
+
+#31 [download_loftee 7/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/loftee.sql.gz -Y off
+#31 CACHED
+
+#32 [stage-3  9/18] RUN cat /opt/vep/src/ensembl-vep/INSTALL.pl
+#32 CACHED
+
+#33 [intermediate 2/2] RUN git clone https://github.com/konradjk/loftee.git /loftee
+#33 CACHED
+
+#34 [download_loftee 8/8] RUN wget https://personal.broadinstitute.org/konradk/loftee_data/GRCh37/phylocsf_gerp.sql.gz -Y off
+#34 CACHED
+
+#35 [internal] load build context
+#35 transferring context: 37B done
+#35 DONE 0.0s
+
+#36 [stage-3 10/18] RUN perl /opt/vep/src/ensembl-vep/INSTALL.pl         --AUTO fcp         --NO_UPDATE         --ASSEMBLY GRCh37         --PLUGINS all         --SPECIES homo_sapiens_merged
+#36 0.551  - getting list of available cache files
+#36 17.28 NB: Remember to use --merged when running the VEP with this cache!
+#36 17.28  - downloading https://ftp.ensembl.org/pub/release-112/variation/indexed_vep_cache/homo_sapiens_merged_vep_112_GRCh37.tar.gz
